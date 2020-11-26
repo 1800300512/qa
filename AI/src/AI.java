@@ -21,98 +21,63 @@ public class AI extends MIDlet
 }
 class MainCanvas extends Canvas
 {
-	//iº¬Òå
-	//0 ×ó
-	//1 ÏÂ
-	//2 ÓÒ
-	//3 ÉÏ
-	int x=110,y=140,count=0;
-	Image img[][]=new Image[4][3];
-	Image currentImg;
+	int x=110,y=140;
+	int flag=1;
+	Image img[][]=new Image[4][3],currentImg;
 	public MainCanvas(){
-	try{
-		for(int i=0;i<4;i++){
-		   for(int j=0;j<3;j++){
-		    img[i][j]=Image.createImage("/sayo"+i+j+".png");
-		   
-		   }
-		}
+		try{
+			for (int i=0;i<img.length ;i++ )
+			{
+				for (int j=0;j<img[i].length ;j++ )
+				{
+					img[i][j]=Image.createImage("/sayo"+i+j+".png");
+				}
+			}
+			currentImg=img[1][0];
+		}catch(IOException e){
 		
-		currentImg=img[1][1];
 		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+
 	}
 	public void paint(Graphics g){
 		g.setColor(0,255,255);
 		g.fillRect(0,0,getWidth(),getHeight());
 		g.drawImage(currentImg,x,y,0);
 	}
-	public void keyPressed(int keyCode){
-	int action=getGameAction(keyCode);
-//left
-	if(action==LEFT){
-		if(count==0){
-		currentImg=img[0][1];
-		count++;
-		}else if(count==1){
-		currentImg=img[0][0];
-		count++;
-  		}else if(count==2){
-		currentImg=img[0][2];
-		count=1;
+	public void change(int a){
+		if (flag==1)
+		{
+			currentImg=img[a][flag];
+			flag++;
+		}else if (flag==2)
+		{
+			currentImg=img[a][flag];
+			flag--;
 		}
-		this.x=this.x-5;
+	}
+	public void keyPressed(int keyCode){
+		int action=getGameAction(keyCode);
+		if(action==LEFT)
+		{
+			change(0);
+			x=x-5;
+		}
+		if(action==DOWN)
+		{
+			change(1);
+			y=y+5;
+		}
+		if(action==RIGHT)
+		{
+			change(2);
+			x=x+5;
+		}
+		if(action==UP)
+		{
+			change(3);
+			y=y-5;
+		}
+		repaint();
 	}
 
-
-//right
-	if(action==RIGHT){
-		if(count==0){
-		currentImg=img[2][1];
-		count++;
-		}else if(count==1){
-		currentImg=img[2][0];
-		count++;
-  		}else if(count==2){
-		currentImg=img[2][2];
-		count=1;
-		}	
-		this.x=this.x+5;
-	}
-
-//up
-	if(action==UP){
-		if(count==0){
-		currentImg=img[3][1];
-		count++;
-		}else if(count==1){
-		currentImg=img[3][0];
-		count++;
-  		}else if(count==2){
-		currentImg=img[3][2];
-		count=1;
-		}	
-		this.y=this.y-5;
-	}
-
-
-//down
-	if(action==DOWN){
-		if(count==0){
-		currentImg=img[1][1];
-		count++;
-		}else if(count==1){
-		currentImg=img[1][0];
-		count++;
-  		}else if(count==2){
-		currentImg=img[1][2];
-		count=1;
-		}	
-		this.y=this.y+5;
-	}
-	repaint();
-	}
 }
